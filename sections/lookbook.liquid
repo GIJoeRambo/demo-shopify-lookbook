@@ -18,33 +18,53 @@
   >
     <div class="lookbook__hero">
       {% if lookbook_desktop_image != blank %}
-        <picture class="lookbook__hero-desktop">
-          0000000000
-        </picture>
-      {% endif %}
+        <picture class="lookbook__hero-media">
+          {% if lookbook_mobile_image != blank %}
+            <source
+              media="(max-width: 990px)"
+              srcset="
+                {{ lookbook_mobile_image | image_url: width: 500 }} 500w,
+                {{ lookbook_mobile_image | image_url: width: 900 }} 900w,
+                {{ lookbook_mobile_image | image_url: width: 1500 }} 1500w
+              "
+              sizes="100vw"
+            >
+          {% endif %}
 
-      {% if lookbook_mobile_image != blank %}
-        <picture class="lookbook__hero-mobile">
-          0000000000
+          {{
+            lookbook_desktop_image
+            | image_url: width: 2200
+            | image_tag:
+              class: 'lookbook__hero-image',
+              widths: '750, 1100, 1500, 1800, 2200',
+              sizes: '(min-width: 1600px) 1080px, 72vw',
+              loading: 'lazy',
+              alt: lookbook_title
+          }}
         </picture>
+
+        <span
+          class="lookbook__hero-overlay"
+          aria-hidden="true"
+        ></span>
       {% endif %}
 
       <div class="lookbook__content">
         {% if lookbook_eyebrow != blank %}
           <p class="lookbook__eyebrow">
-            11111111
+            {{ lookbook_eyebrow | escape }}
           </p>
         {% endif %}
 
         {% if lookbook_title != blank %}
           <h2 class="lookbook__title">
-            222222
+            {{ lookbook_title | escape }}
           </h2>
         {% endif %}
 
         {% if lookbook_description != blank %}
           <div class="lookbook__description">
-            333333
+            {{ lookbook_description | escape }}
           </div>
         {% endif %}
       </div>
@@ -53,11 +73,40 @@
     {% if lookbook_products != blank %}
       <div class="lookbook__products">
         {% for product in lookbook_products %}
-          {% if product != blank %}
-            <div>
-              {{product}} testttt
-            </div>
-          {% endif %}
+          {% liquid
+            assign product_image = product.featured_image
+            assign product_image_alt = product_image.alt | default: product.title
+          %}
+
+          <div class="lookbook__product">
+            <a
+              class="lookbook__product-link"
+              href="{{ product.url }}"
+            >
+              {% if product_image != blank %}
+                {{
+                  product_image
+                  | image_url: width: 800
+                  | image_tag:
+                    class: 'lookbook__product-image',
+                    loading: 'lazy',
+                    widths: '240, 360, 480, 600, 800',
+                    sizes: '245px',
+                    alt: product_image_alt
+                }}
+              {% endif %}
+
+              <div class="lookbook__product-info">
+                <h3 class="lookbook__product-title">
+                  {{ product.title | escape }}
+                </h3>
+
+                <p class="lookbook__product-price">
+                  {{ product.price | money }}
+                </p>
+              </div>
+            </a>
+          </div>
         {% endfor %}
       </div>
     {% endif %}
