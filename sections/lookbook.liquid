@@ -1,0 +1,90 @@
+{% liquid
+  assign lookbook = section.settings.lookbook
+%}
+
+{% if lookbook != blank %}
+  {% liquid
+    assign lookbook_eyebrow = lookbook.eyebrow.value
+    assign lookbook_title = lookbook.title.value
+    assign lookbook_description = lookbook.description.value
+    assign lookbook_desktop_image = lookbook.desktop_image.value
+    assign lookbook_mobile_image = lookbook.mobile_image.value
+    assign lookbook_products = lookbook.products.value
+  %}
+
+  <section
+    id="Lookbook-{{ section.id }}"
+    class="lookbook"
+  >
+    <div class="lookbook__hero">
+      {% if lookbook_desktop_image != blank %}
+        <picture class="lookbook__hero-desktop">
+          0000000000
+        </picture>
+      {% endif %}
+
+      {% if lookbook_mobile_image != blank %}
+        <picture class="lookbook__hero-mobile">
+          0000000000
+        </picture>
+      {% endif %}
+
+      <div class="lookbook__content">
+        {% if lookbook_eyebrow != blank %}
+          <p class="lookbook__eyebrow">
+            11111111
+          </p>
+        {% endif %}
+
+        {% if lookbook_title != blank %}
+          <h2 class="lookbook__title">
+            222222
+          </h2>
+        {% endif %}
+
+        {% if lookbook_description != blank %}
+          <div class="lookbook__description">
+            333333
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    {% if lookbook_products != blank %}
+      <div class="lookbook__products">
+        {% for product in lookbook_products %}
+          {% if product != blank %}
+            <div>
+              {{product}} testttt
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+  </section>
+
+{% elsif request.design_mode %}
+  <div class="lookbook__placeholder">
+    Select a Lookbook entry in the section settings.
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Lookbook",
+  "class": "section",
+  "settings": [
+    {
+      "type": "metaobject",
+      "id": "lookbook",
+      "label": "Lookbook",
+      "metaobject_type": "lookbook"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lookbook"
+    }
+  ]
+}
+{% endschema %}
