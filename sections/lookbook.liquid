@@ -5,6 +5,8 @@
 
 {% liquid
   assign lookbook = section.settings.lookbook
+  assign content_color = section.settings.content_color
+  assign layout = section.settings.layout
 %}
 
 {% if lookbook != blank %}
@@ -14,11 +16,14 @@
     assign lookbook_description = lookbook.description.value
     assign lookbook_image = lookbook.image.value
     assign lookbook_products = lookbook.products.value
+    assign lookbook_target_collection = lookbook.target_collection.value
+    assign lookbook_cta_label = lookbook.cta_button_text.value
   %}
 
   <section
     id="Lookbook-{{ section.id }}"
-    class="lookbook"
+    class="lookbook lookbook--{{ layout }}"
+    style="--content-color: {{ content_color }};"
   >
     <div class="lookbook__hero">
       {% if lookbook_image != blank %}
@@ -59,6 +64,15 @@
             {{ lookbook_description | escape }}
           </div>
         {% endif %}
+
+        {% if lookbook_target_collection != blank and lookbook_cta_label != blank %}
+          <a
+            href="{{ lookbook_target_collection.url }}"
+            class="lookbook__button"
+          >
+            {{ lookbook_cta_label | escape }}
+          </a>
+        {% endif %}
       </div>
     </div>
 
@@ -77,7 +91,6 @@
               <div class="lookbook__product-card">
                 {% render 'card-product',
                   card_product: product,
-                  media_aspect_ratio: 'adapt',
                   show_secondary_image: true,
                   show_vendor: false,
                   show_rating: false,
@@ -124,11 +137,6 @@
       </slider-component>
     {% endif %}
   </section>
-
-{% elsif request.design_mode %}
-  <div class="lookbook__placeholder">
-    Select a Lookbook entry in the section settings.
-  </div>
 {% endif %}
 
 {% schema %}
@@ -140,7 +148,36 @@
       "type": "metaobject",
       "id": "lookbook",
       "label": "Lookbook",
-      "metaobject_type": "lookbook"
+      "metaobject_type": "lookbook",
+      "info": "Select the Lookbook content to display."
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "content_color",
+      "label": "Content color",
+      "default": "#ffffff",
+      "info": "Applies to the eyebrow, title and description."
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "hero-left",
+          "label": "Hero left"
+        },
+        {
+          "value": "hero-right",
+          "label": "Hero right"
+        }
+      ],
+      "default": "hero-left",
+      "info": "Choose which side the hero image appears on for larger screens."
     }
   ],
   "presets": [
