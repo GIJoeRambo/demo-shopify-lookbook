@@ -1,0 +1,75 @@
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-slider.css' | asset_url | stylesheet_tag }}
+{{ 'component-lookbook.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign lookbook = section.settings.lookbook
+  assign layout = section.settings.layout
+%}
+
+{% if lookbook != blank %}
+  {% liquid
+    assign lookbook_eyebrow = lookbook.eyebrow.value
+    assign lookbook_title = lookbook.title.value
+    assign lookbook_description = lookbook.description.value
+    assign lookbook_image = lookbook.image.value
+    assign lookbook_products = lookbook.products.value
+    assign lookbook_target_collection = lookbook.target_collection.value
+    assign lookbook_cta_button_text = lookbook.cta_button_text.value
+  %}
+
+  {% render 'lookbook-content',
+    lookbook_eyebrow: lookbook_eyebrow,
+    lookbook_title: lookbook_title,
+    lookbook_description: lookbook_description,
+    lookbook_image: lookbook_image,
+    lookbook_products: lookbook_products,
+    lookbook_target_collection: lookbook_target_collection,
+    lookbook_cta_button_text: lookbook_cta_button_text,
+    layout: layout,
+    instance_id: section.id
+  %}
+{% endif %}
+
+{% schema %}
+{
+  "name": "Lookbook",
+  "class": "section",
+  "settings": [
+    {
+      "type": "metaobject",
+      "id": "lookbook",
+      "label": "Lookbook",
+      "metaobject_type": "lookbook",
+      "info": "Select the Lookbook content to display."
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "hero-left",
+          "label": "Hero left"
+        },
+        {
+          "value": "hero-right",
+          "label": "Hero right"
+        }
+      ],
+      "default": "hero-left",
+      "info": "Choose which side the hero image appears on for larger screens."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lookbook"
+    }
+  ]
+}
+{% endschema %}

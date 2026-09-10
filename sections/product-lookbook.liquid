@@ -1,0 +1,98 @@
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-slider.css' | asset_url | stylesheet_tag }}
+{{ 'component-lookbook.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign lookbooks = shop.metaobjects.lookbook.values
+  assign section_heading = section.settings.heading
+  assign max_lookbooks = section.settings.max_lookbooks
+  assign matched_lookbook_count = 0
+%}
+
+{% if product != blank and lookbooks != blank %}
+  {% for lookbook in lookbooks %}
+    {% liquid
+      assign lookbook_products = lookbook.products.value
+      assign is_matching_lookbook = false
+    %}
+
+    {% for lookbook_product in lookbook_products %}
+      {% if lookbook_product.id == product.id %}
+        {% assign is_matching_lookbook = true %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+
+    {% if is_matching_lookbook %}
+      {% if matched_lookbook_count == 0 and section_heading != blank %}
+        <div class="product-lookbook__header">
+          <h2 class="product-lookbook__heading">
+            {{ section_heading | escape }}
+          </h2>
+        </div>
+      {% endif %}
+
+      {% liquid
+        assign matched_lookbook_count = matched_lookbook_count | plus: 1
+        assign lookbook_eyebrow = lookbook.eyebrow.value
+        assign lookbook_title = lookbook.title.value
+        assign lookbook_description = lookbook.description.value
+        assign lookbook_image = lookbook.image.value
+        assign lookbook_target_collection = lookbook.target_collection.value
+        assign lookbook_cta_button_text = lookbook.cta_button_text.value
+        assign lookbook_instance_id = section.id | append: '-' | append: matched_lookbook_count
+      %}
+
+      {% render 'lookbook-content',
+        lookbook_eyebrow: lookbook_eyebrow,
+        lookbook_title: lookbook_title,
+        lookbook_description: lookbook_description,
+        lookbook_image: lookbook_image,
+        lookbook_products: lookbook_products,
+        lookbook_target_collection: lookbook_target_collection,
+        lookbook_cta_button_text: lookbook_cta_button_text,
+        layout: 'hero-left',
+        instance_id: lookbook_instance_id
+      %}
+
+      {% if matched_lookbook_count >= max_lookbooks %}
+        {% break %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% schema %}
+{
+  "name": "Product Lookbook",
+  "class": "section product-lookbook",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Style it your way",
+      "info": "Heading displayed above the matching Lookbooks."
+    },
+    {
+      "type": "range",
+      "id": "max_lookbooks",
+      "label": "Maximum lookbooks",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 2,
+      "info": "Maximum number of matching Lookbooks displayed on the product page."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Lookbook"
+    }
+  ]
+}
+{% endschema %}
