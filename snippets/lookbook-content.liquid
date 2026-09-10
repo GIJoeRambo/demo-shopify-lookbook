@@ -1,8 +1,3 @@
-{{ 'component-card.css' | asset_url | stylesheet_tag }}
-{{ 'component-price.css' | asset_url | stylesheet_tag }}
-{{ 'component-slider.css' | asset_url | stylesheet_tag }}
-{{ 'component-lookbook.css' | asset_url | stylesheet_tag }}
-
 <section
   id="Lookbook-{{ instance_id }}"
   class="lookbook lookbook--{{ layout }}"
@@ -47,12 +42,12 @@
         </div>
       {% endif %}
 
-      {% if lookbook_target_collection != blank %}
+      {% if lookbook_target_collection != blank and lookbook_cta_button_text != blank %}
         <a
           href="{{ lookbook_target_collection.url }}"
           class="lookbook__button"
         >
-          Shop the look
+          {{ lookbook_cta_button_text }}
         </a>
       {% endif %}
     </div>
@@ -92,6 +87,7 @@
             class="lookbook__slider-button lookbook__slider-button--prev slider-button slider-button--prev"
             name="previous"
             aria-controls="Slider-{{ instance_id }}"
+            aria-label="{{ 'general.slider.previous_slide' | t }}"
           >
             {% render 'icon-caret' %}
           </button>
@@ -112,6 +108,7 @@
             class="lookbook__slider-button lookbook__slider-button--next slider-button slider-button--next"
             name="next"
             aria-controls="Slider-{{ instance_id }}"
+            aria-label="{{ 'general.slider.next_slide' | t }}"
           >
             {% render 'icon-caret' %}
           </button>

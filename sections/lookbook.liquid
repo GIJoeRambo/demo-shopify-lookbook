@@ -1,3 +1,8 @@
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-slider.css' | asset_url | stylesheet_tag }}
+{{ 'component-lookbook.css' | asset_url | stylesheet_tag }}
+
 {% liquid
   assign lookbook = section.settings.lookbook
   assign layout = section.settings.layout
@@ -11,6 +16,7 @@
     assign lookbook_image = lookbook.image.value
     assign lookbook_products = lookbook.products.value
     assign lookbook_target_collection = lookbook.target_collection.value
+    assign lookbook_cta_button_text = lookbook.cta_button_text.value
   %}
 
   {% render 'lookbook-content',
@@ -20,6 +26,7 @@
     lookbook_image: lookbook_image,
     lookbook_products: lookbook_products,
     lookbook_target_collection: lookbook_target_collection,
+    lookbook_cta_button_text: lookbook_cta_button_text,
     layout: layout,
     instance_id: section.id
   %}

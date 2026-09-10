@@ -34,16 +34,16 @@
   color: var(--text-color);
 }
 
-
 .product-lookbook {
+  --space-sm: 16px;
   --space-xl: 40px;
   --space-2xl: 48px;
 }
 
-.product-lookbook  .product-lookbook__header {
+.product-lookbook .product-lookbook__header {
   width: 100%;
   max-width: 1600px;
-  margin:  auto;
+  margin: 0 auto;
   padding: var(--space-2xl) var(--space-2xl) 0;
 }
 
@@ -434,6 +434,10 @@
   .lookbook {
     padding: 0 0 var(--space-lg);
     overflow: visible;
+  }
+
+  .product-lookbook .product-lookbook__header {
+    padding: var(--space-2xl) var(--space-sm) 0;
   }
 
   .lookbook__hero {
