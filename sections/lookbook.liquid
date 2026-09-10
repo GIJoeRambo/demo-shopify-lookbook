@@ -1,3 +1,8 @@
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-slider.css' | asset_url | stylesheet_tag }}
+{{ 'section-lookbook.css' | asset_url | stylesheet_tag }}
+
 {% liquid
   assign lookbook = section.settings.lookbook
 %}
@@ -7,8 +12,7 @@
     assign lookbook_eyebrow = lookbook.eyebrow.value
     assign lookbook_title = lookbook.title.value
     assign lookbook_description = lookbook.description.value
-    assign lookbook_desktop_image = lookbook.desktop_image.value
-    assign lookbook_mobile_image = lookbook.mobile_image.value
+    assign lookbook_image = lookbook.image.value
     assign lookbook_products = lookbook.products.value
   %}
 
@@ -17,22 +21,10 @@
     class="lookbook"
   >
     <div class="lookbook__hero">
-      {% if lookbook_desktop_image != blank %}
+      {% if lookbook_image != blank %}
         <picture class="lookbook__hero-media">
-          {% if lookbook_mobile_image != blank %}
-            <source
-              media="(max-width: 990px)"
-              srcset="
-                {{ lookbook_mobile_image | image_url: width: 500 }} 500w,
-                {{ lookbook_mobile_image | image_url: width: 900 }} 900w,
-                {{ lookbook_mobile_image | image_url: width: 1500 }} 1500w
-              "
-              sizes="100vw"
-            >
-          {% endif %}
-
           {{
-            lookbook_desktop_image
+            lookbook_image
             | image_url: width: 2200
             | image_tag:
               class: 'lookbook__hero-image',
@@ -71,44 +63,65 @@
     </div>
 
     {% if lookbook_products != blank %}
-      <div class="lookbook__products">
-        {% for product in lookbook_products %}
-          {% liquid
-            assign product_image = product.featured_image
-            assign product_image_alt = product_image.alt | default: product.title
-          %}
-
-          <div class="lookbook__product">
-            <a
-              class="lookbook__product-link"
-              href="{{ product.url }}"
+      <slider-component class="lookbook__products">
+        <ul
+          id="Slider-{{ section.id }}"
+          class="lookbook__product-list slider"
+          role="list"
+        >
+          {% for product in lookbook_products %}
+            <li
+              id="Slide-{{ section.id }}-{{ forloop.index }}"
+              class="lookbook__product slider__slide"
             >
-              {% if product_image != blank %}
-                {{
-                  product_image
-                  | image_url: width: 800
-                  | image_tag:
-                    class: 'lookbook__product-image',
-                    loading: 'lazy',
-                    widths: '240, 360, 480, 600, 800',
-                    sizes: '245px',
-                    alt: product_image_alt
-                }}
-              {% endif %}
-
-              <div class="lookbook__product-info">
-                <h3 class="lookbook__product-title">
-                  {{ product.title | escape }}
-                </h3>
-
-                <p class="lookbook__product-price">
-                  {{ product.price | money }}
-                </p>
+              <div class="lookbook__product-card">
+                {% render 'card-product',
+                  card_product: product,
+                  media_aspect_ratio: 'adapt',
+                  show_secondary_image: true,
+                  show_vendor: false,
+                  show_rating: false,
+                  show_quick_add: false,
+                  section_id: section.id
+                %}
               </div>
-            </a>
+            </li>
+          {% endfor %}
+        </ul>
+
+        {% if lookbook_products.size > 1 %}
+          <div class="lookbook__slider-buttons">
+            <button
+              type="button"
+              class="lookbook__slider-button lookbook__slider-button--prev slider-button slider-button--prev"
+              name="previous"
+              aria-controls="Slider-{{ section.id }}"
+            >
+              {% render 'icon-caret' %}
+            </button>
+
+            <div class="lookbook__product-counter slider-counter caption">
+              <span class="slider-counter--current">1</span>
+              <span aria-hidden="true"> / </span>
+              <span class="visually-hidden">
+                {{ 'general.slider.of' | t }}
+              </span>
+              <span class="slider-counter--total">
+                {{ lookbook_products.size }}
+              </span>
+            </div>
+
+            <button
+              type="button"
+              class="lookbook__slider-button lookbook__slider-button--next slider-button slider-button--next"
+              name="next"
+              aria-controls="Slider-{{ section.id }}"
+            >
+              {% render 'icon-caret' %}
+            </button>
           </div>
-        {% endfor %}
-      </div>
+        {% endif %}
+      </slider-component>
     {% endif %}
   </section>
 
