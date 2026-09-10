@@ -52,6 +52,8 @@ The section files handle selection and matching logic, while the shared snippet 
 
 `Shopify Admin > Content > Metaobjects > Lookbook`
 
+![Lookbook Metaobject configuration](docs/metaobject-configuration.png)
+
 The Lookbook Metaobject contains:
 
 - Eyebrow
