@@ -235,7 +235,7 @@
 
 .lookbook__product-card .card__inner {
   width: 70%;
-  max-width: 380px;
+  max-height: 380px;
   margin: 0 auto;
   background: transparent;
 }

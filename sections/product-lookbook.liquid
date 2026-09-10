@@ -42,13 +42,6 @@
         assign lookbook_target_collection = lookbook.target_collection.value
         assign lookbook_cta_button_text = lookbook.cta_button_text.value
         assign lookbook_instance_id = section.id | append: '-' | append: matched_lookbook_count
-        assign layout_remainder = matched_lookbook_count | modulo: 2
-
-        if layout_remainder == 1
-          assign layout = 'hero-left'
-        else
-          assign layout = 'hero-right'
-        endif
       %}
 
       {% render 'lookbook-content',
@@ -59,7 +52,7 @@
         lookbook_products: lookbook_products,
         lookbook_target_collection: lookbook_target_collection,
         lookbook_cta_button_text: lookbook_cta_button_text,
-        layout: layout,
+        layout: 'hero-left',
         instance_id: lookbook_instance_id
       %}
 
