@@ -34,6 +34,19 @@
   color: var(--text-color);
 }
 
+
+.product-lookbook {
+  --space-xl: 40px;
+  --space-2xl: 48px;
+}
+
+.product-lookbook  .product-lookbook__header {
+  width: 100%;
+  max-width: 1600px;
+  margin:  auto;
+  padding: var(--space-2xl) var(--space-2xl) 0;
+}
+
 /* Hero */
 .lookbook__hero {
   width: 70%;
@@ -60,10 +73,10 @@
   z-index: 1;
   background: linear-gradient(
     90deg,
-    rgba(0, 0, 0, 0.42) 0%,
-    rgba(0, 0, 0, 0.3) 20%,
-    rgba(0, 0, 0, 0.14) 40%,
-    transparent 60%
+    rgba(0, 0, 0, 0.58) 0%,
+    rgba(0, 0, 0, 0.42) 30%,
+    rgba(0, 0, 0, 0.2) 55%,
+    transparent 75%
   );
   pointer-events: none;
 }
@@ -76,7 +89,7 @@
   z-index: 2;
   margin-top: var(--content-top-offset);
   margin-left: var(--space-xl);
-  color: var(--content-color);
+  color: #fff;
 }
 
 .lookbook__eyebrow {
@@ -156,10 +169,10 @@
 .lookbook--hero-right .lookbook__hero-overlay {
   background: linear-gradient(
     270deg,
-    rgba(0, 0, 0, 0.42) 0%,
-    rgba(0, 0, 0, 0.3) 20%,
-    rgba(0, 0, 0, 0.14) 40%,
-    transparent 60%
+    rgba(0, 0, 0, 0.58) 0%,
+    rgba(0, 0, 0, 0.42) 30%,
+    rgba(0, 0, 0, 0.2) 55%,
+    transparent 75%
   );
 }
 
@@ -217,7 +230,7 @@
 
 .lookbook__product-card .card-wrapper {
   width: 100%;
-  height: auto;
+  height: 100%;
 }
 
 .lookbook__product-card .card__inner {
@@ -237,6 +250,10 @@
 
 .lookbook__product-card .card__content {
   text-align: center;
+}
+
+.lookbook__product-card .card:not(.ratio) > .card__content {
+  grid-template-rows: unset;
 }
 
 .lookbook__product-card .card__information {
@@ -353,10 +370,10 @@
   .lookbook--hero-right .lookbook__hero-overlay {
     background: linear-gradient(
       90deg,
-      rgba(0, 0, 0, 0.42) 0%,
-      rgba(0, 0, 0, 0.3) 20%,
-      rgba(0, 0, 0, 0.14) 40%,
-      transparent 60%
+      rgba(0, 0, 0, 0.58) 0%,
+      rgba(0, 0, 0, 0.42) 30%,
+      rgba(0, 0, 0, 0.2) 55%,
+      transparent 75%
     );
   }
 
@@ -482,10 +499,10 @@
   .lookbook--hero-right .lookbook__hero-overlay {
     background: linear-gradient(
       90deg,
-      rgba(0, 0, 0, 0.42) 0%,
-      rgba(0, 0, 0, 0.3) 20%,
-      rgba(0, 0, 0, 0.14) 40%,
-      transparent 60%
+      rgba(0, 0, 0, 0.58) 0%,
+      rgba(0, 0, 0, 0.42) 30%,
+      rgba(0, 0, 0, 0.2) 55%,
+      transparent 75%
     );
   }
 

@@ -1,0 +1,122 @@
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-slider.css' | asset_url | stylesheet_tag }}
+{{ 'component-lookbook.css' | asset_url | stylesheet_tag }}
+
+<section
+  id="Lookbook-{{ instance_id }}"
+  class="lookbook lookbook--{{ layout }}"
+>
+  <div class="lookbook__hero">
+    {% if lookbook_image != blank %}
+      <picture class="lookbook__hero-media">
+        {{
+          lookbook_image
+          | image_url: width: 2200
+          | image_tag:
+            class: 'lookbook__hero-image',
+            widths: '750, 1100, 1500, 1800, 2200',
+            sizes: '(min-width: 1600px) 1080px, 72vw',
+            loading: 'lazy',
+            alt: lookbook_title
+        }}
+      </picture>
+
+      <span
+        class="lookbook__hero-overlay"
+        aria-hidden="true"
+      ></span>
+    {% endif %}
+
+    <div class="lookbook__content">
+      {% if lookbook_eyebrow != blank %}
+        <p class="lookbook__eyebrow">
+          {{ lookbook_eyebrow | escape }}
+        </p>
+      {% endif %}
+
+      {% if lookbook_title != blank %}
+        <h2 class="lookbook__title">
+          {{ lookbook_title | escape }}
+        </h2>
+      {% endif %}
+
+      {% if lookbook_description != blank %}
+        <div class="lookbook__description">
+          {{ lookbook_description | escape }}
+        </div>
+      {% endif %}
+
+      {% if lookbook_target_collection != blank %}
+        <a
+          href="{{ lookbook_target_collection.url }}"
+          class="lookbook__button"
+        >
+          Shop the look
+        </a>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if lookbook_products != blank %}
+    <slider-component class="lookbook__products">
+      <ul
+        id="Slider-{{ instance_id }}"
+        class="lookbook__product-list slider"
+        role="list"
+      >
+        {% for product in lookbook_products %}
+          <li
+            id="Slide-{{ instance_id }}-{{ forloop.index }}"
+            class="lookbook__product slider__slide"
+          >
+            <div class="lookbook__product-card">
+              {% render 'card-product',
+                card_product: product,
+                media_aspect_ratio: "adapt",
+                show_secondary_image: true,
+                show_vendor: false,
+                show_rating: false,
+                show_quick_add: false,
+                section_id: instance_id
+              %}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+
+      {% if lookbook_products.size > 1 %}
+        <div class="lookbook__slider-buttons">
+          <button
+            type="button"
+            class="lookbook__slider-button lookbook__slider-button--prev slider-button slider-button--prev"
+            name="previous"
+            aria-controls="Slider-{{ instance_id }}"
+          >
+            {% render 'icon-caret' %}
+          </button>
+
+          <div class="lookbook__product-counter slider-counter caption">
+            <span class="slider-counter--current">1</span>
+            <span aria-hidden="true"> / </span>
+            <span class="visually-hidden">
+              {{ 'general.slider.of' | t }}
+            </span>
+            <span class="slider-counter--total">
+              {{ lookbook_products.size }}
+            </span>
+          </div>
+
+          <button
+            type="button"
+            class="lookbook__slider-button lookbook__slider-button--next slider-button slider-button--next"
+            name="next"
+            aria-controls="Slider-{{ instance_id }}"
+          >
+            {% render 'icon-caret' %}
+          </button>
+        </div>
+      {% endif %}
+    </slider-component>
+  {% endif %}
+</section>
